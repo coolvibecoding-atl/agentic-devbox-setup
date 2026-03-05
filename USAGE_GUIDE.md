@@ -1176,6 +1176,26 @@ qmd --local                   # Force fully offline mode
 
 ---
 
+## 🧠 Agentic Frameworks
+
+---
+
+### 54. 🦅 OpenClaw — Agentic AI Framework
+**Install:** `npm install -g openclaw`
+**Usage:** A self-hosted open-source framework for building agentic AI, capable of executing tasks on your local machine and integrating with messaging platforms.
+**Key Commands:**
+- `openclaw init` (scaffold a new agent project)
+- `openclaw start` (launch the openclaw agent server)
+
+### 55. 🦸 Obra Superpowers — Global Agentic Skills
+**Install:** Included via GitHub clone into `~/.superpowers`.
+**Usage:** Provides a suite of "skills" and instructions (TDD, DRY, architecture planning) for your AI agents (Claude, Cline, Cursor, etc.). It acts as a standardized workflow enhancer that your other CLIs can read from.
+**Configuration:**
+- It is globally available via the `SUPERPOWERS_PATH` environment variable.
+- Symlinked into `~/.config/cline/superpowers` and `~/.config/claude/superpowers` for seamless zero-config access.
+
+---
+
 ## 🔑 API Keys Reference
 
 | Tool | Where to Get Key |

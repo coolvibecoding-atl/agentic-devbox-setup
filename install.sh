@@ -112,6 +112,7 @@ echo "📦 Installing Global NPM Packages (AI Agents & Web Tools)..."
 
 NPM_PACKAGES=(
     # AI & Agentic Coding
+    openclaw
     @google/genai-cli
     open-interpreter
     @anthropic-ai/claude-code
@@ -167,12 +168,27 @@ if ! command -v ngrok &> /dev/null; then
       && sudo apt update && sudo apt install ngrok || brew install ngrok
 fi
 
+echo "🦸 Installing Agentic Skills (obra/superpowers)..."
+if [ ! -d "$HOME/.superpowers" ]; then
+    git clone https://github.com/obra/superpowers.git "$HOME/.superpowers"
+else
+    echo "Superpowers already cloned. Pulling latest..."
+    cd "$HOME/.superpowers" && git pull && cd - > /dev/null
+fi
+# Make superpowers available to popular CLI agents
+mkdir -p "$HOME/.config/cline" "$HOME/.config/claude"
+ln -sf "$HOME/.superpowers" "$HOME/.config/cline/superpowers" || true
+ln -sf "$HOME/.superpowers" "$HOME/.config/claude/superpowers" || true
+
 # --- 5. ZSH CONFIGURATION ---
 echo "⚙️ Configuring Zsh..."
 
 ZSHRC_AI="$HOME/.zshrc_ai_tools"
 cat << 'EOF' > "$ZSHRC_AI"
 # AI Dev Box Configuration (Auto-Generated)
+
+# Agentic Skills Path
+export SUPERPOWERS_PATH="$HOME/.superpowers"
 
 # Node Version Manager
 export NVM_DIR="$HOME/.nvm"

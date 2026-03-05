@@ -9,7 +9,7 @@ This repository contains a robust, one-click bash script (`install.sh`) designed
 This script automatically installs over **50+ CLI tools** across the following categories:
 
 *   **Core Systems:** Homebrew, Node.js (via NVM), Git
-*   **AI & Agentic Coding CLIs:** Gemini CLI, Claude Code, Open-Interpreter, Codex, Cline, etc.
+*   **AI & Agentic Coding CLIs:** Gemini CLI, Claude Code, Open-Interpreter, Codex, Cline, OpenClaw, Superpowers
 *   **Cloud & Deployments:** AWS, Vercel, Supabase, Cloudflare Wrangler, Fly.io, Stripe
 *   **Next-Gen Databases & Backends:** Convex, Turso
 *   **Frontend Production & Design:** Builder.io, v0, Tailwind CLI, SVGO, ImageOptim
