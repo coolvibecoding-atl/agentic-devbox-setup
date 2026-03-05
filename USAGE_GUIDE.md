@@ -1194,6 +1194,12 @@ qmd --local                   # Force fully offline mode
 - It is globally available via the `SUPERPOWERS_PATH` environment variable.
 - Symlinked into `~/.config/cline/superpowers` and `~/.config/claude/superpowers` for seamless zero-config access.
 
+### 56. 🥧 Pi-Mono (pi-coding-agent) — AI Agent Toolkit
+**Install:** `npm install -g @mariozechner/pi-coding-agent`
+**Usage:** The command-line client for the badlogic monorepo agent. An extensible AI toolkit featuring a terminal UI, Slack bot capabilities, and general purpose coding assistance.
+**Key Commands:**
+- `pi` (launch the terminal interface)
+
 ---
 
 ## 🔑 API Keys Reference

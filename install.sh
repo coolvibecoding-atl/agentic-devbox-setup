@@ -99,6 +99,7 @@ BREW_PACKAGES=(
     charmbracelet/tap/crush
     steipete/tap/gogcli
     biome
+    nushell
 )
 
 brew install "${BREW_PACKAGES[@]}"
@@ -117,6 +118,7 @@ NPM_PACKAGES=(
     open-interpreter
     @anthropic-ai/claude-code
     @kilo-code/cli
+    @mariozechner/pi-coding-agent
     opencodecli
     codebuff
     cline-cli
@@ -166,6 +168,15 @@ if ! command -v ngrok &> /dev/null; then
       && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
       | sudo tee /etc/apt/sources.list.d/ngrok.list \
       && sudo apt update && sudo apt install ngrok || brew install ngrok
+fi
+
+echo "🔍 Installing qmd (Local Semantic Search)..."
+if [ ! -d "$HOME/.qmd" ]; then
+    git clone https://github.com/tobi/qmd "$HOME/.qmd"
+    cd "$HOME/.qmd" && npm install && npm link && cd - > /dev/null
+else
+    echo "qmd already cloned. Pulling latest..."
+    cd "$HOME/.qmd" && git pull && npm install && npm link && cd - > /dev/null
 fi
 
 echo "🦸 Installing Agentic Skills (obra/superpowers)..."
