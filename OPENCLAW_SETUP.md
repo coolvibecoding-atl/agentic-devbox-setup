@@ -46,3 +46,23 @@ Once configured, simply start the OpenClaw gateway daemon in the background:
 openclaw gateway
 ```
 *Your Telegram bot is now alive! Send it a message from your phone, and the MiniMax AI model will respond and execute local terminal commands on your Mac.*
+
+---
+
+## 🤝 Sharing the Bot with Partners
+
+You can share your bot with business partners while keeping your personal accounts and credentials completely private.
+
+### 1. Share the Handle
+Send your partner your bot's username (e.g., `@YourBotName`).
+
+### 2. Partner Initiation
+When your partner starts a chat with the bot, the bot will detect they are unauthorized and reply with a **Pairing Code**. They should copy this code and send it to you.
+
+### 3. Owner Approval
+On **your** machine (where the gateway is running), run the following command to grant them access:
+```bash
+openclaw pairing approve telegram <CODE_THEY_SENT_YOU>
+```
+
+Your partner will now be able to use the agentic power of your dev box directly from their own Telegram account! You can see all active users anytime by running `openclaw status`.

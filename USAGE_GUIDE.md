@@ -1183,6 +1183,7 @@ qmd --local                   # Force fully offline mode
 ### 54. 🦅 OpenClaw — Agentic AI Framework
 **Install:** `npm install -g openclaw`
 **Usage:** A self-hosted open-source framework for building agentic AI, capable of executing tasks on your local machine and integrating with messaging platforms.
+**Team Access:** Securely share with partners via `openclaw pairing approve telegram <CODE>`. See `OPENCLAW_SETUP.md` for full details on multi-user configuration.
 **Key Commands:**
 - `openclaw init` (scaffold a new agent project)
 - `openclaw start` (launch the openclaw agent server)
