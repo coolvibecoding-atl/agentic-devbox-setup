@@ -53,6 +53,17 @@ The setup currently features cutting-edge system refinements:
 17. **Secret Vault Integration**: (`vault-fetch.sh`) Fetches API keys securely via 1Password CLI (`op`), preventing hardcoded credentials in files.
 18. **Design-to-Code Vision Pipeline**: (`figma-to-react.sh`) Uses Anthropic Computer Use to grab Figma geometries and synthesis React components via Gemini Vision.
 
+### 🧊 Phase 18: 3D Visualization Engines
+19. **Blender Headless Pipeline**: (`blender-mcp`) A native MCP server allowing agents to write Python scripts that silently spin up Blender, procedurally generate meshes, and export `.glb` files for web.
+20. **Spline React Integration**: (`spline-mcp`) An MCP server for automatically framing Spline URLs into responsive `@splinetool/react-spline` React components.
+
+### 🎥 Phase 19: Advanced 3D Web Integration
+21. **React Three Fiber Architect**: (`r3f-architect`) Code-gen tool that wraps raw `.glb` files in complex `@react-three/fiber` canvases.
+22. **Luma AI NeRFs**: (`luma-mcp`) Agent-driven API integration to turn mp4 videos of real-world objects into `.glb` 3D meshes using Neural Radiance Fields.
+23. **Autonomous Draco Compression**: (`gltf-draco-compressor`) Pipeline script utilizing Google's Draco engine to compress `.glb` files by 90% without losing quality.
+24. **Rive Interactivity**: (`rive-mcp`) Code generator bridging the new Rive 2D state-machine animation system into React.
+25. **GSAP DOM Injector**: (`gsap-animator`) Weaves `gsap.context()` scroll-triggers directly into flat React components for cinematic UX.
+
 | Skill | Description |
 |---|---|
 | `magentic-one-orchestrator` | Microsoft Magentic-One multi-agent hierarchy — prevents agent loops in multi-hour tasks |

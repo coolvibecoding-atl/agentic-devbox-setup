@@ -104,9 +104,9 @@ BREW_PACKAGES=(
 
 brew install "${BREW_PACKAGES[@]}"
 
-echo "🐳 Installing OrbStack (Docker alternative) and Warp (AI Terminal)..."
+echo "🐳 Installing Casks (OrbStack, Warp, Blender)..."
 # Using --force in case they were previously installed but removed
-brew install --cask orbstack warp --force || echo "Casks may already be installed."
+brew install --cask orbstack warp blender --force || echo "Casks may already be installed."
 
 # --- 3. NPM BATCH INSTALLATION ---
 echo "📦 Installing Global NPM Packages (AI Agents & Web Tools)..."
@@ -142,6 +142,8 @@ NPM_PACKAGES=(
     playwright
     vitest
     storybook
+    # 3D Pipeline
+    gltf-pipeline
 )
 
 npm install -g "${NPM_PACKAGES[@]}"

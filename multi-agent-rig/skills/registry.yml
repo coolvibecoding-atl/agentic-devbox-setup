@@ -294,6 +294,24 @@ skills:
     description: "Clones a target repo and dispatches agents to hunt for zero-days and draft HackerOne reports"
     bound_to: [qa-guardian]
 
+  r3f-architect:
+    type: cli
+    command: "node /Users/coolvibecoding/agentic-devbox-setup/multi-agent-rig/skills/scripts/r3f-architect.js {glb_path} {output_component}"
+    description: "Autonomously generates a React Three Fiber boilerplate Component from a GLB file."
+    bound_to: [frontend-lead, ux-creative]
+
+  gltf-draco-compressor:
+    type: cli
+    command: "node /Users/coolvibecoding/agentic-devbox-setup/multi-agent-rig/skills/scripts/gltf-draco-compressor.js {glb_path}"
+    description: "Applies Draco compression to a .glb file, significantly reducing bundle size."
+    bound_to: [mcp-integrations, qa-guardian]
+
+  gsap-animator:
+    type: cli
+    command: "node /Users/coolvibecoding/agentic-devbox-setup/multi-agent-rig/skills/scripts/gsap-animator.js {tsx_path}"
+    description: "Injects GSAP ScrollTrigger boilerplate into an existing TSX file."
+    bound_to: [frontend-lead, ux-creative]
+
 # ═══════ CROSS-AGENT TRIGGERS ═══════
 cross_agent_triggers:
 
