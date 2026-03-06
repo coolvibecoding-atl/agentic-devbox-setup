@@ -288,6 +288,12 @@ skills:
     description: "Instant skip-CI deployment to Cloudflare Edge or Vercel production"
     bound_to: [mcp-integrations]
 
+  bounty-triage-scanner:
+    type: cli
+    command: "/Users/coolvibecoding/agentic-devbox-setup/multi-agent-rig/scripts/bounty-triage-scanner.sh {repo_url}"
+    description: "Clones a target repo and dispatches agents to hunt for zero-days and draft HackerOne reports"
+    bound_to: [qa-guardian]
+
 # ═══════ CROSS-AGENT TRIGGERS ═══════
 cross_agent_triggers:
 
