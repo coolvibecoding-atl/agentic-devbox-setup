@@ -67,6 +67,12 @@ The setup currently features cutting-edge system refinements:
 |---|---|---|
 | Core backup library | 563 | github.com/404kidwiz/claude-skills-backup |
 | SEO & GEO optimization | 20 | aaron-he-zhu/seo-geo-claude-skills |
+| Scientific Deep Research | 14 | luwill/research-skills |
+| Medical/Clinical Bio-RAG | 12 | K-Dense-AI/claude-scientific-skills |
+| X/Twitter & Polymarket Data | 18 | neokahu/x-research-skill & openapexmarket |
+| Financial Analyst OS | 21 | Bigdata-com/skills-financial-research-analyst |
+| Competitive Intelligence | 11 | damionrashford/RivalSearch-Plugin |
+| Design & Agency Tooling | 19 | designagentlab/skills |
 | App Store Optimization | 17 | Eronred/aso-skills |
 | Trail of Bits security | 35 | trailofbits/skills |
 | Scientific research | 31 | K-Dense-AI/claude-scientific-skills |
