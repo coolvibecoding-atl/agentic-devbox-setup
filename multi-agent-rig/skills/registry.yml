@@ -248,6 +248,27 @@ skills:
     description: "Invoke Claude Code Max logic engine. Use strictly for apex reasoning / resolving infinite loops"
     bound_to: [arch-director, mcp-integrations]
 
+  # ═══════ ENHANCED RESEARCH & TELEMETRY ═══════
+  web-research:
+    type: http
+    endpoint: "https://openrouter.ai/api/v1/chat/completions"
+    model: "perplexity/sonar" 
+    # Costs: $1/1M tokens, $5/1000 search requests
+    description: "Real-time web search with citations for research tasks via Perplexity"
+    bound_to: [arch-director, docs-narrator, qa-guardian]
+
+  durable-task-executor:
+    type: cli
+    command: "node /workspace/project/skills/scripts/temporal-worker.js '{task}'"
+    description: "Start a durable temporal.io workflow for running tasks expected to take > 10 minutes"
+    bound_to: [arch-director, backend-senior]
+
+  generate-cursor-rules:
+    type: cli
+    command: "npx @cursor-ide/rules-generator ."
+    description: "Auto-generate .cursorrules from codebase context"
+    bound_to: [mcp-integrations]
+
 # ═══════ CROSS-AGENT TRIGGERS ═══════
 cross_agent_triggers:
 

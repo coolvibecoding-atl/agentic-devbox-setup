@@ -20,19 +20,29 @@ This script automatically installs over **50+ CLI tools** and **800+ AI Agent Sk
 
 ## 🤖 Multi-Agent Coding Rig (Agent Zero + OpenClaw)
 
-This repository now includes a fully configured **Multi-Agent Coding Rig** in the `multi-agent-rig/` directory. This rig sets up a Dockerized autonomous coding team composed of **7 specialized OpenClaw subagents** (Architect, Backend, Frontend, UX, MCP/Infra, QA, Docs) orchestrated by a CEO agent, collaborating seamlessly with a sandboxed **Agent Zero** container for heavy code execution.
+This repository now includes a fully configured **Multi-Agent Coding Rig** in the `multi-agent-rig/` directory. 
 
 Features of the Rig:
-- **Skill Auto-Invocation:** Agents autonomously use tools like `run-lighthouse`, `run-unit-tests`, and `spline-export`.
+- **7 Specialized Subagents** (Architect, Backend, Frontend, UX, MCP/Infra, QA, Docs) led by a Kimi 2.5 CEO.
 - **Shared Workspace:** Real-time codebase modifications across all agents.
-- **Persistent Memory:** ChromaDB vector search and Postgres session storage.
-- **Free-Tier LLM support:** Pre-configured for OpenRouter's free tier models.
+- **Persistent Memory:** ChromaDB vector search and a **PAI Memory Hub** (JSON sidecar) for cross-session long-term memory.
+- **Dual-Lane Routing:** Combines OpenRouter's free tier with precise Claude Code Pro bounds.
 
-See the `multi-agent-rig/RUNBOOK.md` for operations and testing instructions.
+## 🤕 Epic System Upgrades (2026 Edition)
 
-## 🤕 God-Tier System Upgrades
+The setup currently features cutting-edge system refinements:
 
-The setup now includes 5 next-generation architectural upgrades:
+1. **Cinematic Landing Page Engine:** `GEMINI.md` fused globally, giving Antigravity automatic design-studio output.
+2. **Kimi 2.5 Apex Orchestrator:** CEO logic powered by `moonshotai/kimi-k2.5`.
+3. **Local Failover:** Maps to `ollama/qwen2.5-coder:32b` or `deepseek-r1:32b` on 96GB RAM local rigs.
+4. **Perplexity Sonar Pro Integration:** `web-research` skill dynamically fetching real-time citations.
+5. **Universal Pre-Commit Guardian:** `scripts/install-precommit.sh` outright bans failing tests/lints from Git history.
+6. **Telemetry Dashboard:** Tracks LLM API invocations.
+7. **Context Squeezing:** `scripts/context-compressor.js` reclaims VRAM in multi-hour sessions.
+8. **Visual QA:** `scripts/visual-qa.sh` runs Playwright screenshots through Gemini for UI defect identification.
+9. **Temporal.io Durable AI:** Handles extreme refactoring sessions.
+10. **Self-Healing CI/CD:** Auto-triggers the backend-senior agent to patch code if GitHub Actions fail.
+11. **Voice Briefings:** ElevenLabs audio alerts trigger on critical pipeline failures.
 
 | Skill | Description |
 |---|---|
