@@ -10,6 +10,7 @@ This script automatically installs over **50+ CLI tools** across the following c
 
 *   **Core Systems:** Homebrew, Node.js (via NVM), Git
 *   **AI & Agentic Coding CLIs:** Gemini CLI, Claude Code, Open-Interpreter, Codex, Cline, OpenClaw, Superpowers, pi-mono
+*   **600+ Agentic Skills:** Automatic provisioning of 600+ advanced skills across all CLIs (Vercel, Anthropic, Custom God-Tier).
 *   **Cloud & Deployments:** AWS, Vercel, Supabase, Cloudflare Wrangler, Fly.io, Stripe
 *   **Next-Gen Databases & Backends:** Convex, Turso
 *   **Frontend Production & Design:** Builder.io, v0, Tailwind CLI, SVGO, ImageOptim

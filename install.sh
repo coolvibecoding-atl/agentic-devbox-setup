@@ -191,7 +191,186 @@ mkdir -p "$HOME/.config/cline" "$HOME/.config/claude"
 ln -sf "$HOME/.superpowers" "$HOME/.config/cline/superpowers" || true
 ln -sf "$HOME/.superpowers" "$HOME/.config/claude/superpowers" || true
 
-# --- 5. ZSH CONFIGURATION ---
+# --- 5. AI AGENT SKILLS CONFIGURATION ---
+echo "🧠 Installing 600+ Expert Agentic Skills across all CLIs..."
+
+# Define target directories for AI Agents
+SKILL_DIRS=(
+    "$HOME/.gemini/antigravity/skills/"
+    "$HOME/.claude/skills/"
+    "$HOME/homebrew/.claude/skills/"
+    "$HOME/.codex/skills/"
+    "$HOME/.config/kilo/skills/"
+    "$HOME/.superpowers/.opencode/plugins/"
+    "$HOME/.openclaw/skills/"
+)
+
+for target in "${SKILL_DIRS[@]}"; do
+    mkdir -p "$target"
+done
+
+# Function to clone and install additional skills
+install_remote_skill() {
+    local repo_url=$1
+    local skill_name=$2
+    local temp_dir="/tmp/skill_clone_$(uuidgen)"
+    
+    echo "Installing $skill_name..."
+    git clone --depth 1 "$repo_url" "$temp_dir" > /dev/null 2>&1
+    
+    if [ -d "$temp_dir" ]; then
+        local skill_src=""
+        if [ -d "$temp_dir/skills/$skill_name" ]; then skill_src="$temp_dir/skills/$skill_name";
+        elif [ -d "$temp_dir/skills" ] && [ "$skill_name" == "trailofbits-skills" ]; then skill_src="$temp_dir/skills";
+        elif [ -d "$temp_dir/$skill_name" ]; then skill_src="$temp_dir/$skill_name";
+        else
+            local found_dir=$(find "$temp_dir" -name "SKILL.md" -exec grep -l -i "name:.*$skill_name" {} + | head -n 1 | xargs dirname 2>/dev/null)
+            if [ -n "$found_dir" ] && [ -d "$found_dir" ]; then skill_src="$found_dir";
+            elif [ -f "$temp_dir/SKILL.md" ]; then skill_src="$temp_dir"; fi
+        fi
+        
+        local safe_name="${skill_name// /_}"
+        if [ -n "$skill_src" ] && [ -d "$skill_src" ]; then
+            for target in "${SKILL_DIRS[@]}"; do
+                if [ "$skill_name" == "trailofbits-skills" ]; then cp -R "$skill_src/"* "$target/" 2>/dev/null || cp -R "$skill_src" "$target/$safe_name";
+                elif [ "$skill_name" == "research-skills" ] && [ -d "$skill_src/skills" ]; then cp -R "$skill_src/skills/"* "$target/" 2>/dev/null || cp -R "$skill_src" "$target/$safe_name";
+                else cp -R "$skill_src" "$target/$safe_name"; fi
+            done
+        fi
+        rm -rf "$temp_dir"
+    fi
+}
+
+echo "Cloning 563-skill base backup repository..."
+git clone --depth 1 https://github.com/404kidwiz/claude-skills-backup.git /tmp/claude-skills-backup > /dev/null 2>&1
+if [ -d "/tmp/claude-skills-backup" ]; then
+    for target in "${SKILL_DIRS[@]}"; do cp -R /tmp/claude-skills-backup/* "$target/"; done
+    rm -rf /tmp/claude-skills-backup
+fi
+
+echo "Installing community, vercel, and specialized remote skills..."
+install_remote_skill "https://github.com/vercel-labs/skills" "find-skills"
+install_remote_skill "https://github.com/vercel-labs/agent-skills" "vercel-react-best-practices"
+install_remote_skill "https://github.com/vercel-labs/agent-skills" "web-design-guidelines"
+install_remote_skill "https://github.com/remotion-dev/skills" "remotion-best-practices"
+install_remote_skill "https://github.com/microsoft/github-copilot-for-azure" "azure-ai"
+install_remote_skill "https://github.com/vercel-labs/agent-browser" "agent-browser"
+install_remote_skill "https://github.com/vercel-labs/agent-skills" "vercel-composition-patterns"
+install_remote_skill "https://github.com/anthropics/skills" "skill-creator"
+install_remote_skill "https://github.com/sleekdotdesign/agent-skills" "sleek-design-mobile-apps"
+install_remote_skill "https://github.com/vercel-labs/agent-skills" "vercel-react-native-skills"
+install_remote_skill "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" "ui-ux-pro-max"
+install_remote_skill "https://github.com/obra/superpowers" "brainstorming"
+install_remote_skill "https://github.com/coreyhaines31/marketingskills" "seo-audit"
+install_remote_skill "https://github.com/squirrelscan/skills" "audit-website"
+install_remote_skill "https://github.com/anthropics/skills" "pdf"
+install_remote_skill "https://github.com/supabase/agent-skills" "supabase-postgres-best-practices"
+install_remote_skill "https://github.com/coreyhaines31/marketingskills" "copywriting"
+install_remote_skill "https://github.com/obra/superpowers" "systematic-debugging"
+install_remote_skill "https://github.com/anthropics/skills" "docx"
+install_remote_skill "https://github.com/tul-sh/skills" "agent-tools"
+install_remote_skill "https://github.com/tul-sh/skills" "twitter-automation"
+install_remote_skill "https://github.com/tul-sh/skills" "remotion-render"
+install_remote_skill "https://github.com/tul-sh/skills" "nano-banana-2"
+install_remote_skill "https://github.com/hexiaochun/seedance2-api" "seedance2-api"
+install_remote_skill "https://github.com/anthropics/skills" "theme-factory"
+install_remote_skill "https://github.com/anthropics/skills" "algorithmic-art"
+install_remote_skill "https://github.com/anthropics/skills" "web-artifacts-builder"
+install_remote_skill "https://github.com/anthropics/skills" "brand-guidelines"
+install_remote_skill "https://github.com/google-labs-code/stitch-skills" "stitch-loop"
+install_remote_skill "https://github.com/anthropics/skills" "template-skill"
+install_remote_skill "https://github.com/google-labs-code/stitch-skills" "enhance-prompt"
+install_remote_skill "https://github.com/giuseppe-trisciuoglio/developer-kit" "shadcn-ui"
+install_remote_skill "https://github.com/vercel/ai" "ai-sdk"
+install_remote_skill "https://github.com/github/awesome-copilot" "git-commit"
+install_remote_skill "https://github.com/madteacher/mad-agents-skills" "flutter-animations"
+install_remote_skill "https://github.com/firecrawl/cli" "firecrawl"
+install_remote_skill "https://github.com/am-will/codex-skills" "Frontend Responsive Design Standards"
+install_remote_skill "https://github.com/hyf0/vue-skills" "vue-best-practices"
+install_remote_skill "https://github.com/am-will/codex-skills" "context7"
+install_remote_skill "https://github.com/am-will/codex-skills" "parallel-task"
+install_remote_skill "https://github.com/am-will/codex-skills" "plan-harder"
+install_remote_skill "https://github.com/am-will/codex-skills" "openai-docs-skill"
+install_remote_skill "https://github.com/am-will/codex-skills" "swarm-planner"
+install_remote_skill "https://github.com/am-will/codex-skills" "gemini-computer-use"
+install_remote_skill "https://github.com/mvanhorn/last30days-skill" "last30days-skill"
+install_remote_skill "https://github.com/skainguyen1412/social-media-research-skill" "social-media-research-skill"
+install_remote_skill "https://github.com/prikotov/google-trends" "google-trends"
+install_remote_skill "https://github.com/JYunth/newspaper" "newspaper"
+install_remote_skill "https://github.com/xiazhefengzhi/find-products-skill" "find-products-skill"
+install_remote_skill "https://github.com/K-Dense-AI/claude-scientific-skills" "claude-scientific-skills"
+install_remote_skill "https://github.com/luwill/research-skills" "research-skills"
+install_remote_skill "https://github.com/trailofbits/skills" "trailofbits-skills"
+install_remote_skill "https://github.com/tul-sh/skills" "ai-video-generation"
+install_remote_skill "https://github.com/obra/superpowers" "test-driven-developments"
+install_remote_skill "https://github.com/anthropics/skills" "webapp-testing"
+install_remote_skill "https://github.com/better-auth/skills" "better-auth-best-practices"
+install_remote_skill "https://github.com/coreyhaines31/marketingskills" "content-strategy"
+install_remote_skill "https://github.com/anthropics/skills" "mcp-builder"
+install_remote_skill "https://github.com/obra/superpowers" "using-superpowers"
+install_remote_skill "https://github.com/coreyhaines31/marketingskills" "pricing-strategy"
+install_remote_skill "https://github.com/expo/skills" "building-native-ui"
+install_remote_skill "https://github.com/obra/superpowers" "subagent-driven-development"
+install_remote_skill "https://github.com/wshobson/agents" "tailwind-design-system"
+install_remote_skill "https://github.com/coreyhaines31/marketingskills" "launch-strategy"
+install_remote_skill "https://github.com/obra/superpowers" "using-git-worktrees"
+install_remote_skill "https://github.com/obra/superpowers" "dispatching-parallel-agents"
+install_remote_skill "https://github.com/coreyhaines31/marketingskills" "signup-flow-cro"
+install_remote_skill "https://github.com/coreyhaines31/marketingskills" "paywall-upgrade-cro"
+install_remote_skill "https://github.com/google-labs-code/stitch-skills" "design-md"
+
+echo "Generating 12 Custom God-Tier Skills..."
+BASE_DIR="/tmp/custom_god_tier_skills"
+mkdir -p "$BASE_DIR"
+
+create_custom_skill() {
+    local name=$1
+    local desc=$2
+    local dir="$BASE_DIR/$name"
+    
+    mkdir -p "$dir"
+    cat << EOF > "$dir/SKILL.md"
+---
+name: $name
+description: $desc
+metadata:
+  author: antigravity
+  version: "1.0.0"
+---
+
+# $name
+
+## Overview
+$desc
+
+## Usage Rules
+- Automatically triggered when the user asks about topics related to $name.
+- Execute steps meticulously according to the industry best practices for this domain.
+- Use parallel subagents when dealing with highly complex aspects of this skill.
+EOF
+
+    for target in "${SKILL_DIRS[@]}"; do
+        cp -R "$dir" "$target/"
+    done
+}
+
+create_custom_skill "crewai-orchestrator" "Define multi-agent SOPs and crew configurations for Autogen or CrewAI."
+create_custom_skill "ollama-local-router" "Automatically fallback to local LLMs like Llama 3 when cloud APIs rate limit."
+create_custom_skill "mcp-database-connectors" "Configure Model Context Protocol (MCP) servers to give the AI direct read/write access to local Postgres, SQLite, or Redis."
+create_custom_skill "k8s-operator-builder" "Generate Kubernetes Custom Resource Definitions (CRDs) and Go operators."
+create_custom_skill "github-actions-architect" "Generate production-ready, highly complex GitHub Actions CI/CD YAML files with caching, matrix builds, and security scanning."
+create_custom_skill "databricks-snowflake-engineer" "Enterprise-level data warehouse tooling for generating complex dbt models and Airflow DAGs."
+create_custom_skill "smart-contract-auditor-pro" "Find deep reentrancy vulnerabilities in Solidity using Slither and Foundry integrations."
+create_custom_skill "zero-day-fuzzer" "Generate Python scripts for protocol/API fuzzing and memory corruption testing on compiled binaries."
+create_custom_skill "cloud-iam-least-privilege" "Analyze AWS/GCP IAM policies and automatically refactor them to strict least-privilege standards."
+create_custom_skill "elevenlabs-voice-architect" "Interface with ElevenLabs for generating dynamic Text-to-Speech assets directly from the CLI."
+create_custom_skill "webgl-threejs-expert" "Write complex, mathematically intensive 3D shader code, Three.js scenes, and React-Three-Fiber models."
+create_custom_skill "wasm-rust-bridge" "Compile Rust into WebAssembly and generate the exact React hooks needed to consume them for high-performance browser computing."
+
+rm -rf "$BASE_DIR"
+
+
+# --- 6. ZSH CONFIGURATION ---
 echo "⚙️ Configuring Zsh..."
 
 ZSHRC_AI="$HOME/.zshrc_ai_tools"
