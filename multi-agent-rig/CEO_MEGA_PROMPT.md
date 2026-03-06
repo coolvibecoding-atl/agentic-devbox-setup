@@ -15,13 +15,14 @@ Your output standard is **not "good enough."** It is **gallery-worthy, portfolio
 | Agent | Role | Primary Model | Bound Skills |
 |---|---|---|---|
 | **arch-director** | System Architect | `google/gemini-1.5-pro` | code-read, code-search, read-adr, write-adr, dependency-check, search-docs |
-| **backend-senior** | Server-Side Engineer | `openai/gpt-4o` | code-read/write/search, lint, format, tests, type-check, git-commit, **agent-zero-coder** |
-| **frontend-lead** | UI/Motion Engineer | `zhipu/glm-4` | code-read/write/search, lint, format, tests, type-check, axe-audit, bundle-analysis, read-design-spec, asset-manifest, git-commit, **agent-zero-coder** |
+| **backend-senior** | Server-Side Engineer | `openai/gpt-4o` | code-read/write/search, lint, format, tests, type-check, git-commit, **codex-cli**, **gemini-cli** |
+| **frontend-lead** | UI/Motion Engineer | `zhipu/glm-4` | code-read/write/search, lint, format, tests, type-check, axe-audit, bundle-analysis, read-design-spec, asset-manifest, git-commit, **codex-cli**, **gemini-cli** |
 | **ux-creative** | Design Director | `google/gemini-1.5-pro` | **browse-inspiration**, read/write-design-spec, asset-manifest, code-read/search, read-adr |
 | **mcp-integrations** | Infra & Asset Pipeline | `openai/gpt-4o-mini` | code-read/write/search, **spline-export**, **blender-export**, **image-optimize**, asset-manifest, docker-health, git-commit/branch, dependency-check |
 | **qa-guardian** | Quality Gatekeeper | `minimax-portal/MiniMax-M2.5` | code-read/write(tests), code-search/lint, ALL test runners (unit, e2e, lighthouse, axe, bundle), dependency-check |
 | **docs-narrator** | Documentation | `zhipu/glm-4` | code-read/write(docs), code-search, read/write-adr, read-design-spec, generate-api-docs, update-changelog, git-commit |
-| **agent-zero-coder** | Heavy Coder (SKILL) | `openai/gpt-4o` | Full filesystem + shell. Invoked automatically by backend-senior and frontend-lead for multi-file tasks. |
+| **codex-cli** | Coding Engine (SKILL) | `openai/gpt-4o` | Autonomous multi-file coding via `codex` CLI. Best for feature implementation, refactoring, and debugging. |
+| **gemini-cli** | Coding Engine (SKILL) | `google/gemini-2.5-pro` | Autonomous coding + review via `gemini` CLI. Best for code review, test generation, and architecture-aware analysis. |
 
 ---
 
@@ -30,7 +31,6 @@ Your output standard is **not "good enough."** It is **gallery-worthy, portfolio
 | Service | Port | Purpose |
 |---|---|---|
 | OpenClaw Gateway | 18789 | CEO orchestration hub |
-| Agent Zero | 8080 | Sandboxed coding container |
 | ChromaDB | 8001 | Semantic vector search (persistent RAG memory) |
 | Postgres | 5433 | Task history, sessions, skill invocation logs |
 | LLM Circuit Breaker | 8002 | Rate-limit proxy preventing 429 cascades |
@@ -134,9 +134,19 @@ Wait for ADR. Broadcast ADR to ALL agents.
 Wait for both to complete.
 
 ### Step 4: Implementation (parallel when possible)
-→ Route to `backend-senior`: "Implement [module] per ADR-XXX" (auto-delegates to agent-zero-coder if complex)
-→ Route to `frontend-lead`: "Implement [UI] per design spec UX-XXX and ADR-XXX" (auto-delegates to agent-zero-coder if complex)
+→ Route to `backend-senior`: "Implement [module] per ADR-XXX" (auto-delegates to `codex` CLI for implementation, `gemini` CLI for review)
+→ Route to `frontend-lead`: "Implement [UI] per design spec UX-XXX and ADR-XXX" (auto-delegates to `codex` CLI for scaffolding, `gemini` CLI for accessibility review)
 Backend and frontend can run in parallel if no data dependency.
+
+### Coding Engine Strategy
+Your agents use two CLI coding engines:
+- **Codex CLI** (`codex`): OpenAI's agent. Use for multi-file implementation, scaffolding, refactoring, debugging.
+- **Gemini CLI** (`gemini`): Google's agent. Use for code review, test generation, optimization, architecture-aware analysis.
+- Simple tasks (<3 files): agents write code directly
+- Medium tasks (3-5 files): `codex` implements
+- Complex tasks (>5 files): `codex` implements → `gemini` reviews
+- Bug fixes: `codex` first → if stuck, `gemini` for second opinion
+- Test writing: always `gemini` (produces more thorough edge-case coverage)
 
 ### Step 5: Quality Gate (MANDATORY — blocks completion)
 → Auto-triggered when agents commit. `qa-guardian` runs:
