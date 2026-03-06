@@ -1,0 +1,168 @@
+version: "3.9"
+
+# ============================================================
+# MULTI-AGENT CODING RIG — Docker Compose
+# OpenClaw (CEO orchestrator) + Agent Zero (hands-on coder)
+# + ChromaDB (vector search) + Postgres (state/logs)
+# Free-tier LLMs via OpenRouter
+# ============================================================
+
+networks:
+  agent-net:
+    driver: bridge
+
+volumes:
+  # Shared workspace — BOTH openclaw and agent-zero see the same code
+  workspace:
+    driver: local
+  # Persistent vector DB storage
+  chromadb-data:
+    driver: local
+  # Persistent Postgres storage
+  postgres-data:
+    driver: local
+
+services:
+
+  # ─────────────────────────────────────────────
+  # OPENCLAW — CEO Orchestrator
+  # Routes tasks to subagents, enforces quality gates
+  # ─────────────────────────────────────────────
+  openclaw:
+    image: node:22-alpine
+    container_name: openclaw
+    working_dir: /app
+    command: sh -c "npm install -g openclaw && openclaw gateway --port 18789"
+    volumes:
+      - workspace:/workspace/project
+      - ./openclaw-config:/root/.openclaw
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - OPENROUTER_BASE_URL=${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}
+      - A0_API_URL=http://agent-zero:8080
+      - A0_API_KEY=${A0_API_KEY}
+      - OPENCLAW_GATEWAY_PORT=18789
+      - NODE_ENV=production
+    ports:
+      - "18789:18789"
+    networks:
+      - agent-net
+    depends_on:
+      agent-zero:
+        condition: service_healthy
+      chromadb:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:18789/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────
+  # AGENT ZERO — Delegated Expert Coder
+  # Invoked by openclaw for complex multi-file tasks (>3 files or >200 lines)
+  # Shares the same /workspace/project volume as openclaw
+  # ─────────────────────────────────────────────
+  agent-zero:
+    image: frdel/agent-zero-run:latest
+    container_name: agent-zero
+    volumes:
+      - workspace:/workspace/project
+      - ./agent-zero-config:/app/config
+    environment:
+      - LLM_API_URL=${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}
+      - LLM_API_KEY=${OPENROUTER_API_KEY}
+      - LLM_MODEL=${A0_LLM_MODEL:-deepseek/deepseek-coder-v2:free}
+      - LLM_FALLBACK_MODEL=${A0_LLM_FALLBACK:-qwen/qwen-2.5-coder-7b-instruct:free}
+      - A0_API_KEY=${A0_API_KEY}
+      - WORKSPACE_DIR=/workspace/project
+    ports:
+      - "8080:8080"
+    networks:
+      - agent-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────
+  # CHROMADB — Vector Database
+  # Powers code-search and search-docs skills
+  # Semantic search across codebase and documentation
+  # ─────────────────────────────────────────────
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb
+    volumes:
+      - chromadb-data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    ports:
+      - "8001:8000"
+    networks:
+      - agent-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────
+  # POSTGRES — Persistent State
+  # Stores task history, session logs, agent memory
+  # ─────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: agent-postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-agentrig}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
+      - POSTGRES_DB=${POSTGRES_DB:-agentrig}
+    ports:
+      - "5433:5432"
+    networks:
+      - agent-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-agentrig}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────
+  # WORKSPACE INDEXER — Background embeddings job
+  # Indexes /workspace/project into ChromaDB on startup
+  # and watches for changes to keep search index current
+  # ─────────────────────────────────────────────
+  workspace-indexer:
+    image: node:22-alpine
+    container_name: workspace-indexer
+    working_dir: /app
+    command: sh -c "npm install && node index.js"
+    volumes:
+      - workspace:/workspace/project:ro
+      - ./workspace-indexer:/app
+    environment:
+      - CHROMA_URL=http://chromadb:8000
+      - WORKSPACE_DIR=/workspace/project
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+    networks:
+      - agent-net
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    restart: unless-stopped

@@ -1,0 +1,309 @@
+# ============================================================
+# MASTER SKILL REGISTRY — skills/registry.yml
+# Defines every skill, its type, endpoint, and agent bindings
+# ============================================================
+
+skills:
+
+  # ═══════ CODING & IMPLEMENTATION ═══════
+  agent-zero-coder:
+    type: http
+    endpoint: "${A0_API_URL}/api/task"
+    auth: "Bearer ${A0_API_KEY}"
+    timeout: 300
+    description: "Delegate complex multi-file coding (>3 files or >200 lines) to Agent Zero"
+    bound_to: [backend-senior, frontend-lead]
+    auto_chain_after: [run-unit-tests, run-type-check, code-lint]
+    input:
+      adr_reference: string
+      design_spec: string?
+      target_directory: string
+      expected_tests: string
+      git_branch: string
+      task_description: string
+    output:
+      files_changed: array
+      summary: string
+      test_results: object
+
+  code-read:
+    type: filesystem
+    method: read
+    root: /workspace/project
+    description: "Read files or directory trees from the project workspace"
+    bound_to: [ALL]
+
+  code-write:
+    type: filesystem
+    method: write
+    root: /workspace/project
+    description: "Write or modify files in the project workspace"
+    bound_to: [backend-senior, frontend-lead, mcp-integrations, qa-guardian, docs-narrator]
+    directory_restrictions:
+      backend-senior: [/src/modules/, /tests/]
+      frontend-lead: [/src/app/, /src/components/, /tests/]
+      mcp-integrations: [/docker-compose.yml, /scripts/, /assets/, /.github/, /skills/]
+      qa-guardian: [/tests/, /.github/workflows/]
+      docs-narrator: [/docs/, /README.md, /CHANGELOG.md]
+
+  code-search:
+    type: vector_db
+    endpoint: "http://chromadb:8000"
+    collection: codebase
+    description: "Semantic search across the codebase via ChromaDB embeddings"
+    bound_to: [ALL]
+    input:
+      query: string
+      top_k: int?
+    output:
+      results: array
+
+  code-lint:
+    type: cli
+    command: "npx biome check {files}"
+    description: "Run Biome linter and return violations"
+    bound_to: [backend-senior, frontend-lead, qa-guardian]
+
+  code-format:
+    type: cli
+    command: "npx biome format --write {files}"
+    description: "Auto-format code with Biome"
+    bound_to: [backend-senior, frontend-lead]
+
+  dependency-check:
+    type: cli
+    command: "npx audit-ci --config audit-ci.json && npx bundlephobia-cli {package}"
+    description: "Check npm dependencies for vulnerabilities, size, and license issues"
+    bound_to: [arch-director, qa-guardian, mcp-integrations]
+
+  # ═══════ TESTING & QUALITY ═══════
+  run-unit-tests:
+    type: cli
+    command: "npx vitest run {paths} --coverage"
+    description: "Execute Vitest unit tests with coverage report"
+    bound_to: [qa-guardian, backend-senior, frontend-lead]
+
+  run-e2e-tests:
+    type: cli
+    command: "npx playwright test {spec}"
+    description: "Execute Playwright end-to-end tests"
+    bound_to: [qa-guardian]
+
+  run-lighthouse:
+    type: cli
+    command: "npx lhci autorun --config=lighthouserc.json --collect.url={url}"
+    description: "Run Lighthouse CI audit for performance, SEO, accessibility"
+    bound_to: [qa-guardian]
+
+  run-axe-audit:
+    type: cli
+    command: "npx axe-cli {url} --tags wcag2aa"
+    description: "Run axe-core accessibility scan against WCAG 2.2 AA"
+    bound_to: [qa-guardian, frontend-lead]
+
+  run-bundle-analysis:
+    type: cli
+    command: "npx next build --analyze"
+    description: "Analyze JS/CSS bundle sizes and flag regressions"
+    bound_to: [qa-guardian, frontend-lead]
+
+  run-type-check:
+    type: cli
+    command: "npx tsc --noEmit"
+    description: "Run TypeScript strict type check, return all errors"
+    bound_to: [backend-senior, frontend-lead, qa-guardian]
+
+  # ═══════ DESIGN & ASSETS ═══════
+  browse-inspiration:
+    type: web_scrape
+    allowed_sources:
+      - godly.website
+      - awwwards.com
+      - read.cv
+    description: "Fetch and analyze design patterns from inspiration sites"
+    bound_to: [ux-creative]
+
+  asset-manifest:
+    type: filesystem
+    path: /workspace/project/assets/manifest.json
+    description: "Read or update the master asset manifest"
+    bound_to: [mcp-integrations, ux-creative, frontend-lead]
+    cross_trigger:
+      - target: frontend-lead
+        condition: "asset-manifest updated by mcp-integrations"
+        message: "New assets available in manifest"
+
+  spline-export:
+    type: cli
+    command: "node /workspace/project/skills/scripts/spline-export.js {input} {output}"
+    description: "Export Spline scenes to web-ready embed format"
+    bound_to: [mcp-integrations]
+
+  blender-export:
+    type: cli
+    command: "blender -b {input} --python /workspace/project/skills/scripts/export_glb.py -- --output {output} --draco"
+    description: "Export Blender files to GLB with Draco compression"
+    bound_to: [mcp-integrations]
+
+  image-optimize:
+    type: cli
+    command: "npx sharp-cli --webp --avif {input} -o {output}"
+    description: "Compress images to WebP/AVIF with quality targets"
+    bound_to: [mcp-integrations, frontend-lead]
+
+  # ═══════ DOCUMENTATION ═══════
+  read-adr:
+    type: filesystem
+    path: /workspace/project/docs/adr/
+    description: "Read Architecture Decision Records"
+    bound_to: [ALL]
+
+  write-adr:
+    type: filesystem
+    path: /workspace/project/docs/adr/
+    description: "Create or update an ADR"
+    bound_to: [arch-director, docs-narrator]
+    cross_trigger:
+      - target: ALL
+        condition: always
+        message: "New ADR available: {adr_id}"
+
+  read-design-spec:
+    type: filesystem
+    path: /workspace/project/docs/design/
+    description: "Read design specifications from ux-creative"
+    bound_to: [frontend-lead, ux-creative, qa-guardian]
+
+  write-design-spec:
+    type: filesystem
+    path: /workspace/project/docs/design/
+    description: "Create or update a design specification"
+    bound_to: [ux-creative]
+    cross_trigger:
+      - target: frontend-lead
+        condition: always
+        message: "New design spec: {spec_id}"
+      - target: mcp-integrations
+        condition: "spec contains 3D or Spline or Blender or asset requirements"
+        message: "Asset preparation needed for spec: {spec_id}"
+
+  generate-api-docs:
+    type: cli
+    command: "npx trpc-docs generate --router src/modules/*/router.ts --output docs/api/"
+    description: "Auto-generate API docs from tRPC router and Zod schemas"
+    bound_to: [docs-narrator]
+
+  update-changelog:
+    type: filesystem
+    path: /workspace/project/CHANGELOG.md
+    description: "Append to CHANGELOG.md following Keep a Changelog format"
+    bound_to: [docs-narrator]
+
+  search-docs:
+    type: vector_db
+    endpoint: "http://chromadb:8000"
+    collection: documentation
+    description: "Semantic search across all project documentation"
+    bound_to: [ALL]
+
+  # ═══════ INFRASTRUCTURE ═══════
+  git-status:
+    type: cli
+    command: "git status && git log --oneline -5"
+    description: "Check git status, diff, and recent commits"
+    bound_to: [ALL]
+
+  git-commit:
+    type: cli
+    command: "git add {files} && git commit -m '{message}'"
+    description: "Stage and commit with conventional commit message"
+    bound_to: [backend-senior, frontend-lead, mcp-integrations, docs-narrator]
+    cross_trigger:
+      - target: qa-guardian
+        condition: always
+        message: "Post-commit quality check on: {files}"
+
+  git-branch:
+    type: cli
+    command: "git {action} {branch}"
+    description: "Create, switch, or merge git branches"
+    bound_to: [mcp-integrations]
+
+  docker-health:
+    type: cli
+    command: "docker compose ps && docker compose logs --tail=20"
+    description: "Check health of all Docker services in the rig"
+    bound_to: [mcp-integrations, CEO]
+
+  openrouter-status:
+    type: http
+    endpoint: "https://openrouter.ai/api/v1/auth/key"
+    auth: "Bearer ${OPENROUTER_API_KEY}"
+    description: "Check current rate limit usage and model availability"
+    bound_to: [ALL]
+
+# ═══════ CROSS-AGENT TRIGGERS ═══════
+cross_agent_triggers:
+
+  - event: git-commit
+    source: ANY
+    target: qa-guardian
+    auto: true
+    message: "Run post-commit quality check"
+
+  - event: code-write
+    source: ANY
+    path_match: "/src/modules/*/schema.ts"
+    target: docs-narrator
+    auto: true
+    message: "API schema changed — update docs"
+
+  - event: code-write
+    source: ANY
+    path_match: "/src/components/**"
+    target: docs-narrator
+    auto: true
+    message: "Component changed — update component docs"
+
+  - event: write-adr
+    source: arch-director
+    target: ALL
+    auto: true
+    message: "New/updated ADR — load for context"
+
+  - event: write-design-spec
+    source: ux-creative
+    target: frontend-lead
+    auto: true
+    message: "Design spec ready for implementation"
+
+  - event: write-design-spec
+    source: ux-creative
+    condition: "contains 3D/asset/Spline/Blender references"
+    target: mcp-integrations
+    auto: true
+    message: "Prepare assets for spec"
+
+  - event: asset-manifest-update
+    source: mcp-integrations
+    target: frontend-lead
+    auto: true
+    message: "New assets available"
+
+  - event: qa-report-critical
+    source: qa-guardian
+    target: CEO
+    auto: true
+    message: "Critical quality failure — route to responsible agent"
+
+  - event: rate-limit-hit
+    source: ANY
+    target: CEO
+    auto: true
+    message: "Rate limited — switch to fallback model"
+
+  - event: feature-complete
+    source: CEO
+    target: docs-narrator
+    auto: true
+    message: "Document completed feature"
