@@ -1,0 +1,6 @@
+version: "3.9"
+
+services:
+  openclaw:
+    # Need to keep the container running for VS Code to attach
+    command: /bin/sh -c "while sleep 1000; do :; done"

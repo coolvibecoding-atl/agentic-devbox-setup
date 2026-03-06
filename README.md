@@ -17,6 +17,18 @@ This script automatically installs over **50+ CLI tools** across the following c
 *   **Terminal Power Tools:** Warp, OrbStack, yazi, btop, eza, zoxide, starship, zellij, nushell, qmd
 *   **Modern Runtimes & Toolchains:** Bun, Deno, pnpm, Biome
 
+## 🤖 Multi-Agent Coding Rig (Agent Zero + OpenClaw)
+
+This repository now includes a fully configured **Multi-Agent Coding Rig** in the `multi-agent-rig/` directory. This rig sets up a Dockerized autonomous coding team composed of **7 specialized OpenClaw subagents** (Architect, Backend, Frontend, UX, MCP/Infra, QA, Docs) orchestrated by a CEO agent, collaborating seamlessly with a sandboxed **Agent Zero** container for heavy code execution.
+
+Features of the Rig:
+- **Skill Auto-Invocation:** Agents autonomously use tools like `run-lighthouse`, `run-unit-tests`, and `spline-export`.
+- **Shared Workspace:** Real-time codebase modifications across all agents.
+- **Persistent Memory:** ChromaDB vector search and Postgres session storage.
+- **Free-Tier LLM support:** Pre-configured for OpenRouter's free tier models.
+
+See the `multi-agent-rig/RUNBOOK.md` for operations and testing instructions.
+
 ## ⚡ How to Run
 
 1.  Clone this repository to your local machine:

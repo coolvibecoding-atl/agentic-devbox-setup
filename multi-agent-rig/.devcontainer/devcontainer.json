@@ -1,0 +1,20 @@
+{
+    "name": "Multi-Agent Coding Rig",
+    "dockerComposeFile": [
+        "../docker-compose.yml",
+        "docker-compose.devcontainer.yml"
+    ],
+    "service": "openclaw",
+    "workspaceFolder": "/workspace/project",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "bradlc.vscode-tailwindcss",
+                "github.copilot"
+            ]
+        }
+    },
+    "remoteUser": "root"
+}

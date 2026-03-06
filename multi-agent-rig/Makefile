@@ -47,6 +47,21 @@ index-workspace:
 	@echo "📚 Indexing workspace into ChromaDB..."
 	docker compose restart workspace-indexer
 
+# Backup all agent state, DB, and Chroma vectors
+backup:
+	@echo "📦 Backing up agent state and databases..."
+	@mkdir -p backups
+	@tar -czf backups/rig-backup-$$(date +%Y%m%d%H%M%S).tar.gz ~/.openclaw/agents/ postgres-data/ chromadb-data/
+	@echo "✅ Backup complete in backups/"
+
+# Restore agent state (Requires FILE=backups/...)
+restore:
+	@if [ -z "$$FILE" ]; then echo "❌ Error: Must specify FILE (e.g., make restore FILE=backups/rig-backup-xxx.tar.gz)"; exit 1; fi
+	@echo "⚠️  Restoring will overwrite current state."
+	@read -p "Are you sure? [y/N] " ans && [ "$$ans" = "y" ] || exit 1
+	@tar -xzf $$FILE -C /
+	@echo "✅ Restore complete. Please restart OpenClaw."
+
 # Wipe all volumes (DESTRUCTIVE — removes all stored state)
 clean:
 	@echo "⚠️  This will delete ALL volumes including workspace data."
@@ -68,5 +83,7 @@ help:
 	@echo "  make shell-a0        — Shell into Agent Zero"
 	@echo "  make shell-db        — Postgres CLI"
 	@echo "  make index-workspace — Re-index codebase in ChromaDB"
+	@echo "  make backup          — Backup agent configurations and databases"
+	@echo "  make restore         — Restore from backup (FILE=...)"
 	@echo "  make clean           — DESTROY all volumes (careful!)"
 	@echo ""

@@ -166,3 +166,60 @@ services:
       chromadb:
         condition: service_healthy
     restart: unless-stopped
+
+  # ─────────────────────────────────────────────
+  # LLM CIRCUIT BREAKER
+  # Rate-limits API requests to prevent cascading 429s (Enhancement #9)
+  # ─────────────────────────────────────────────
+  llm-circuit-breaker:
+    image: node:22-alpine
+    container_name: llm-circuit-breaker
+    working_dir: /app
+    command: sh -c "npm install && node index.js"
+    volumes:
+      - ./llm-circuit-breaker:/app
+    environment:
+      - MAX_REQ_PER_MIN=30
+      - TARGET_URL=https://openrouter.ai/api/v1
+    ports:
+      - "8002:8002"
+    networks:
+      - agent-net
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────
+  # GITHUB WEBHOOK SERVER
+  # Auto-triggers qa-guardian on repository push (Enhancement #5)
+  # ─────────────────────────────────────────────
+  webhook-server:
+    image: node:22-alpine
+    container_name: webhook-server
+    working_dir: /app
+    command: sh -c "npm install && node index.js"
+    volumes:
+      - ./webhook-server:/app
+      - ~/.openclaw:/root/.openclaw
+    environment:
+      - PORT=8003
+    ports:
+      - "8003:8003"
+    networks:
+      - agent-net
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────
+  # AGENT COST DASHBOARD
+  # Tracks estimated LLM usage across agents (Enhancement #7)
+  # ─────────────────────────────────────────────
+  cost-dashboard:
+    image: node:22-alpine
+    container_name: cost-dashboard
+    working_dir: /app
+    command: sh -c "npm install && node index.js"
+    volumes:
+      - ./cost-dashboard:/app
+    ports:
+      - "8004:8004"
+    networks:
+      - agent-net
+    restart: unless-stopped

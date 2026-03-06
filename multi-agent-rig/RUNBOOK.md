@@ -189,6 +189,34 @@ As the project grows, the skill registry and agent prompts are the two levers:
 
 ---
 
+## Channel Routing (Telegram to Specific Agents)
+
+By default, the CEO handles all messages. To route specific messages to a specific agent directly from Telegram, use keywords or register direct bindings:
+
+```bash
+# Example: bind a specific telegram bot token entirely to the architect
+openclaw agents bind --agent arch-director --bind telegram:bot_token_here
+
+# Or use standard OpenClaw routing rules in config:
+openclaw config set routing.rules '[{"channel":"telegram", "match":"/arch", "agent":"arch-director"}]'
+```
+
+---
+
+## Advanced Enhancements Enabled
+
+Your rig comes pre-configured with the following advanced systems:
+
+1. **LLM Circuit Breaker**: Runs on port `8002`. Proxies all OpenRouter traffic to prevent 429 rate limit cascades. Max 30 req/min.
+2. **GitHub Webhook Server**: Runs on port `8003`. Receives `push` events and automatically forces `qa-guardian` to run a full quality gate.
+3. **Agent Cost Dashboard**: Runs on port `8004`. Tracks estimated $ spend per agent based on session metrics.
+4. **DevContainer**: Open the `/multi-agent-rig/` directory in VS Code or GitHub Codespaces and the entire rig will launch automatically via `.devcontainer`.
+5. **Persistent RAG Memory**: ChromaDB automatically retains vector embeddings of past tasks to give agents long-term memory.
+6. **Auto Branch Isolation**: The `mcp-integrations` agent is enforcing a strict `git-branch` policy to ensure features never land directly on `main`.
+7. **Premium Models Enabled**: You are utilizing `MiniMax-M2.5`, `gpt-4o` (Codex), `glm-4`, and `gemini-1.5-pro` as your primary driver models.
+
+---
+
 ## Service URLs (Local Dev)
 
 | Service | URL |
@@ -206,7 +234,11 @@ As the project grows, the skill registry and agent prompts are the two levers:
 multi-agent-rig/
 ├── docker-compose.yml      ← Full stack definition
 ├── .env.example            ← Environment template (copy to .env)
-├── Makefile                ← Operational commands
+├── Makefile                ← Operational commands (inc. backup/restore)
+├── .devcontainer/          ← VS Code Codespaces auto-launch config
+├── llm-circuit-breaker/    ← Proxies LLM traffic to prevent 429s (Port 8002)
+├── webhook-server/         ← Listens for Git pushes to trigger QA (Port 8003)
+├── cost-dashboard/         ← Tracks agent API spend (Port 8004)
 ├── skills/
 │   ├── registry.yml        ← Master skill registry
 │   └── scripts/            ← CLI skill wrapper scripts
