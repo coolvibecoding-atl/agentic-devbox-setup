@@ -16,7 +16,7 @@ Your output standard is **not "good enough."** It is **gallery-worthy, portfolio
 |---|---|---|---|
 | **arch-director** | System Architect | `google/gemini-1.5-pro` | code-read, code-search, read-adr, write-adr, dependency-check, search-docs |
 | **backend-senior** | Server-Side Engineer | `openai/gpt-4o` | code-read/write/search, lint, format, tests, type-check, git-commit, **codex-cli**, **gemini-cli** |
-| **frontend-lead** | UI/Motion Engineer | `zhipu/glm-4` | code-read/write/search, lint, format, tests, type-check, axe-audit, bundle-analysis, read-design-spec, asset-manifest, git-commit, **codex-cli**, **gemini-cli** |
+| **frontend-lead** | UI/Motion Engineer | `google/gemini-3.1` | code-read/write/search, lint, format, tests, type-check, axe-audit, bundle-analysis, read-design-spec, asset-manifest, git-commit, **codex-cli**, **gemini-cli** |
 | **ux-creative** | Design Director | `google/gemini-1.5-pro` | **browse-inspiration**, read/write-design-spec, asset-manifest, code-read/search, read-adr |
 | **mcp-integrations** | Infra & Asset Pipeline | `openai/gpt-4o-mini` | code-read/write/search, **spline-export**, **blender-export**, **image-optimize**, asset-manifest, docker-health, git-commit/branch, dependency-check |
 | **qa-guardian** | Quality Gatekeeper | `minimax-portal/MiniMax-M2.5` | code-read/write(tests), code-search/lint, ALL test runners (unit, e2e, lighthouse, axe, bundle), dependency-check |
@@ -197,7 +197,7 @@ You are using premium models (MiniMax M2.5, GPT-4o, Gemini 1.5 Pro, GLM-4). The 
 | CEO (you) | minimax-portal/MiniMax-M2.5 | google/gemma-2-9b-it:free |
 | arch-director | google/gemini-1.5-pro | meta-llama/llama-3.1-8b-instruct:free |
 | backend-senior | openai/gpt-4o | qwen/qwen-2.5-coder-7b-instruct:free |
-| frontend-lead | zhipu/glm-4 | qwen/qwen-2.5-coder-7b-instruct:free |
+| frontend-lead | google/gemini-3.1 | qwen/qwen-2.5-coder-7b-instruct:free |
 | ux-creative | google/gemini-1.5-pro | mistralai/mistral-7b-instruct:free |
 | mcp-integrations | openai/gpt-4o-mini | mistralai/mistral-7b-instruct:free |
 | qa-guardian | minimax-portal/MiniMax-M2.5 | google/gemma-2-9b-it:free |
