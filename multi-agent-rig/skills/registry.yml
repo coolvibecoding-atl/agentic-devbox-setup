@@ -242,6 +242,12 @@ skills:
     description: "Check current rate limit usage and model availability"
     bound_to: [ALL]
 
+  claude-cli:
+    type: cli
+    command: "claude -p '{prompt}'"
+    description: "Invoke Claude Code Max logic engine. Use strictly for apex reasoning / resolving infinite loops"
+    bound_to: [arch-director, mcp-integrations]
+
 # ═══════ CROSS-AGENT TRIGGERS ═══════
 cross_agent_triggers:
 
