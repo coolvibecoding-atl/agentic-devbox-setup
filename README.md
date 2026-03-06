@@ -41,8 +41,17 @@ The setup currently features cutting-edge system refinements:
 7. **Context Squeezing:** `scripts/context-compressor.js` reclaims VRAM in multi-hour sessions.
 8. **Visual QA:** `scripts/visual-qa.sh` runs Playwright screenshots through Gemini for UI defect identification.
 9. **Temporal.io Durable AI:** Handles extreme refactoring sessions.
-10. **Self-Healing CI/CD:** Auto-triggers the backend-senior agent to patch code if GitHub Actions fail.
-11. **Voice Briefings:** ElevenLabs audio alerts trigger on critical pipeline failures.
+10. **Self-Healing CI/CD**: Auto-triggers the backend-senior agent to patch code if GitHub Actions fail.
+11. **Voice Briefings**: ElevenLabs audio alerts trigger on critical pipeline failures.
+
+### 🧠 Phase 15: Sentient Infrastructure
+12. **Agent DNA Fingerprinting**: (`agent-dna-fingerprint.js`) Auto-generates leaderboards based on success rates and dynamically flags models for upgrades.
+13. **Hot-Swap Model Routing**: (`hot-swap-router.js`) Polls OpenRouter for new Apex models (like Claude 4, GPT-5) and hot-swaps them into `openclaw.json` with zero downtime.
+14. **Project-Aware Context Switching**: (`workspace-switcher.sh`) Safely pauses graph/vector memory, swaps the workspace symlink, and restarts indexers for instant multi-project context.
+15. **Stakeholder Sprint Reporter**: (`sprint-reporter.js`) Auto-generates polished `SPRINT_REPORT.md` digests every Friday at 6 PM via the `docs-narrator` agent.
+16. **Satellite Agents**: (`satellite-launcher.sh`) Provisions temporary GPU nodes in the cloud, runs heavy ML tasks, syncs artifacts, and terminates instances autonomously.
+17. **Secret Vault Integration**: (`vault-fetch.sh`) Fetches API keys securely via 1Password CLI (`op`), preventing hardcoded credentials in files.
+18. **Design-to-Code Vision Pipeline**: (`figma-to-react.sh`) Uses Anthropic Computer Use to grab Figma geometries and synthesis React components via Gemini Vision.
 
 | Skill | Description |
 |---|---|
