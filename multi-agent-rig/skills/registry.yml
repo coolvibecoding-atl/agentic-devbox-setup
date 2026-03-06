@@ -269,6 +269,25 @@ skills:
     description: "Auto-generate .cursorrules from codebase context"
     bound_to: [mcp-integrations]
 
+  # ═══════ GOD-MODE REFINEMENTS ═══════
+  graph-rag-query:
+    type: http
+    endpoint: "http://neo4j:7474/db/neo4j/tx"
+    description: "Query complex code relationships (impact analysis) via Neo4j Cypher"
+    bound_to: [arch-director]
+
+  os-terminal-vision:
+    type: http
+    endpoint: "http://agent-desktop:8080/api/v1/computer"
+    description: "Interact with the host OS GUI (Figma, Xcode) via Anthropic Computer Use vision"
+    bound_to: [ux-creative, mcp-integrations]
+
+  edge-deployer:
+    type: cli
+    command: "wrangler deploy || vercel --prod --yes"
+    description: "Instant skip-CI deployment to Cloudflare Edge or Vercel production"
+    bound_to: [mcp-integrations]
+
 # ═══════ CROSS-AGENT TRIGGERS ═══════
 cross_agent_triggers:
 
