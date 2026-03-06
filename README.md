@@ -6,7 +6,7 @@ This repository contains a robust, one-click bash script (`install.sh`) designed
 
 ## 📦 What's Included?
 
-This script automatically installs over **50+ CLI tools** across the following categories:
+This script automatically installs over **50+ CLI tools** and **800+ AI Agent Skills** across the following categories:
 
 *   **Core Systems:** Homebrew, Node.js (via NVM), Git
 *   **AI & Agentic Coding CLIs:** Gemini CLI, Claude Code, Open-Interpreter, Codex, Cline, OpenClaw, Superpowers, pi-mono
@@ -29,6 +29,34 @@ Features of the Rig:
 - **Free-Tier LLM support:** Pre-configured for OpenRouter's free tier models.
 
 See the `multi-agent-rig/RUNBOOK.md` for operations and testing instructions.
+
+## 🤕 God-Tier System Upgrades
+
+The setup now includes 5 next-generation architectural upgrades:
+
+| Skill | Description |
+|---|---|
+| `magentic-one-orchestrator` | Microsoft Magentic-One multi-agent hierarchy — prevents agent loops in multi-hour tasks |
+| `mcp-unified-connector` | MCP universal bus — all 800+ skills natively read/write VS Code, Postgres, Redis, cloud APIs |
+| `self-healing-pipeline` | Autonomous CI/CD repair — detects failures, writes the fix, pushes a PR |
+| `speckit-spec-guardian` | Spec-First enforcement — agents must satisfy SPEC.md before committing |
+| `pai-memory-hub` | Centralized LangGraph memory — rig remembers decisions across all projects |
+
+## 📚 800+ AI Agent Skills Installed
+
+| Category | Count | Source |
+|---|---|---|
+| Core backup library | 563 | github.com/404kidwiz/claude-skills-backup |
+| SEO & GEO optimization | 20 | aaron-he-zhu/seo-geo-claude-skills |
+| App Store Optimization | 17 | Eronred/aso-skills |
+| Trail of Bits security | 35 | trailofbits/skills |
+| Scientific research | 31 | K-Dense-AI/claude-scientific-skills |
+| Research & writing | 3 | luwill/research-skills |
+| Vercel (React, Next.js) | 5 | vercel-labs/agent-skills |
+| Custom God-Tier | 17 | Generated locally |
+| Community extras | 60+ | Various |
+
+**All skills are installed simultaneously into:** Gemini CLI, Claude Code, Codex, Kilo Code, OpenCode, and OpenClaw.
 
 ## ⚡ How to Run
 
