@@ -64,6 +64,13 @@ The setup currently features cutting-edge system refinements:
 24. **Rive Interactivity**: (`rive-mcp`) Code generator bridging the new Rive 2D state-machine animation system into React.
 25. **GSAP DOM Injector**: (`gsap-animator`) Weaves `gsap.context()` scroll-triggers directly into flat React components for cinematic UX.
 
+### 🧠 Phase 20: J.A.R.V.I.S. Awakening & Enterprise Analytics
+26. **Continuous Documentation Engine**: (`continuous-docs-daemon.js`) Background Node script that watches git commits and self-heals READMEs, graphs, and system architectures.
+27. **Project DNA Replication**: (`project-dna-extractor.js`) Extracts ChromaDB vectors and Neo4j graphs into portable JSON context packages for zero-loss multi-project context hopping.
+28. **Enterprise Grafana Observability**: (`prometheus.yml` + `docker-compose`) Full stack monitoring of LLM costs, agent throughput loops, and vector database CPU utilization.
+29. **MacOS Voice OS Loop**: (`voice-os.sh`) CLI listener utilizing `sox` for microphone capture, sending via Whisper, proxying into OpenClaw, and executing audio callbacks via ElevenLabs.
+30. **Brain Dumps**: Native OS ingestion flows for Obsidian and Notion using their native Markdown templates and schema extraction apps.
+
 | Skill | Description |
 |---|---|
 | `magentic-one-orchestrator` | Microsoft Magentic-One multi-agent hierarchy — prevents agent loops in multi-hour tasks |

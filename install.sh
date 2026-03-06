@@ -100,13 +100,14 @@ BREW_PACKAGES=(
     steipete/tap/gogcli
     biome
     nushell
+    sox
 )
 
 brew install "${BREW_PACKAGES[@]}"
 
 echo "🐳 Installing Casks (OrbStack, Warp, Blender)..."
 # Using --force in case they were previously installed but removed
-brew install --cask orbstack warp blender --force || echo "Casks may already be installed."
+brew install --cask orbstack warp blender obsidian notion --force || echo "Casks may already be installed."
 
 # --- 3. NPM BATCH INSTALLATION ---
 echo "📦 Installing Global NPM Packages (AI Agents & Web Tools)..."

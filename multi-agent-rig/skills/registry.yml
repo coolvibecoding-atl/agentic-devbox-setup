@@ -312,6 +312,24 @@ skills:
     description: "Injects GSAP ScrollTrigger boilerplate into an existing TSX file."
     bound_to: [frontend-lead, ux-creative]
 
+  continuous-docs-trigger:
+    type: cli
+    command: "node /Users/coolvibecoding/agentic-devbox-setup/multi-agent-rig/scripts/continuous-docs-daemon.js"
+    description: "Self-healing documentation trigger. Polles git diffs to alert the docs-narrator agent."
+    bound_to: [docs-narrator, arch-director]
+
+  project-dna-extractor:
+    type: cli
+    command: "node /Users/coolvibecoding/agentic-devbox-setup/multi-agent-rig/scripts/project-dna-extractor.js"
+    description: "Extracts Neo4j and ChromaDB context into a God-Mode JSON DNA file."
+    bound_to: [mcp-integrations]
+
+  voice-os-prompt:
+    type: cli
+    command: "/Users/coolvibecoding/agentic-devbox-setup/multi-agent-rig/scripts/voice-os.sh"
+    description: "Triggers the active Voice OS microphone loop to invoke agents using Whisper and ElevenLabs."
+    bound_to: [main, qa-guardian]
+
 # ═══════ CROSS-AGENT TRIGGERS ═══════
 cross_agent_triggers:
 
